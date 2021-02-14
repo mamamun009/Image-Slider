@@ -15,7 +15,6 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
-  console.log(images.length);
   document.getElementById('matchingResultContainer').style.display = 'block';
   matchingResult.innerText = images.length;
   if (images.length === null || images.length== "") {
