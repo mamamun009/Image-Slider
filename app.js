@@ -87,7 +87,6 @@ const createSlider = () => {
   // check negative duration for slide
   if (document.getElementById('duration').value < 0) {
     alert('Slider duration cant be negative');
-    document.getElementById('duration').value = '';
     return;
   }
   document.querySelector('.main').style.display = 'block';
@@ -97,7 +96,7 @@ const createSlider = () => {
   sliders.forEach(slide => {
     let item = document.createElement('div')
     item.className = "slider-item";
-    item.innerHTML = `<img class="w-100"
+    item.innerHTML = `<h4>Slide duration is: ${duration}ms</h4><img class="w-100"
     src="${slide}"
     alt="">`;
     sliderContainer.appendChild(item)
@@ -107,6 +106,9 @@ const createSlider = () => {
     slideIndex++;
     changeSlide(slideIndex);
   }, duration);
+}
+const clearDuration = () =>{
+  document.getElementById('duration').value = '';
 }
 
 // change slider index 
