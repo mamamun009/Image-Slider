@@ -6,8 +6,6 @@ const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
 const error = document.getElementById('error');
 const matchingResult= document.getElementById('matchingResult');
-const selectAll = document.getElementById('selectAll');
-const unSelectAll = document.getElementById('unSelectAll');
 let sliders = [];
 //
 // If this key doesn't work
@@ -53,25 +51,6 @@ const getImages = (query) => {
 
 let slideIndex = 0;
 let count = 0;
-selectAll.addEventListener('click', ()=>{
-  selectAllF();
-})
-const selectAllF = () =>{
-  let item = sliders.indexOf(img);
-  if (item === -1) {
-    element.classList.add('added');
-    sliders.push(img);
-    count ++;
-    document.getElementById('selectedImg').innerText = count;
-  } else {
-    element.classList.remove('added');
-    sliders.splice(item, 1);
-    if (count >0) {
-      count --;
-      document.getElementById('selectedImg').innerText = count;
-    }
-  }
-}
 const selectItem = (event, img) => {
   let element = event.target;
   // element.classList.add('added');
