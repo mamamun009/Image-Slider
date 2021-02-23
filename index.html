@@ -17,10 +17,10 @@
 
 <body>
   <div class="container">
-    <h4 class="mt-2 text-center">Search Image for create slider</h4>
+    <h4 class="mt-2 text-center">Search for Image to create slider</h4>
     <div class="form-inline mt-3 d-flex justify-content-center">
       <div class="input-group col-md-6 mb-2">
-        <input onKeyPress="enterBtn(event)" type="text" class="form-control" id="search" placeholder="nature">
+        <input onKeyPress="enterBtn(event)" type="text" class="form-control" id="search" placeholder="nature/mountain/sea/art/abstract">
       </div>
       <button type="button" id="search-btn" class="btn btn-primary mb-2">Search</button>
     </div>
@@ -42,7 +42,9 @@
       </div>
       <div id="matchingResultContainer" style="text-align: center; display: none;">
         <h3> <span id="matchingResult">0</span> matching results:</h3>
+        <button id="selectAll" class="btn btn-success ">Select all</button>
         <h3><span id="selectedImg"></span> image selected</h3>
+        <button id="UnselectAll" class="btn btn-danger mb-2">Unselect all</button>
       </div>
       <div class="row gallery">
       </div>

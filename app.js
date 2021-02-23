@@ -1,3 +1,4 @@
+let search = document.getElementById('search');
 const imagesArea = document.querySelector('.images');
 const gallery = document.querySelector('.gallery');
 const galleryHeader = document.querySelector('.gallery-header');
@@ -5,8 +6,12 @@ const searchBtn = document.getElementById('search-btn');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
 const error = document.getElementById('error');
-const matchingResult= document.getElementById('matchingResult');
+const selectAllImg= document.getElementById('selectAll');
+const UnselectAll= document.getElementById('UnselectAll');
+const matchingResult = document.getElementById('matchingResult');
+const selectedImgDisplay = document.getElementById('selectedImgDisplay');
 let sliders = [];
+let count = 0;
 //
 // If this key doesn't work
 // Find the name in the url and go to their website
@@ -16,8 +21,9 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 // show images 
 const showImages = (images) => {
   document.getElementById('matchingResultContainer').style.display = 'block';
+  console.log(images);
   matchingResult.innerText = images.length;
-  if (images.length === null || images.length== "") {
+  if (images.length === null || images.length == "") {
     error.style.display = 'block';
     imagesArea.style.display = 'none';
   }
@@ -30,13 +36,56 @@ const showImages = (images) => {
     images.forEach(image => {
       let div = document.createElement('div');
       div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-      div.innerHTML = ` <img class="img-fluid img-thumbnail w-100 " onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
+      div.innerHTML = ` <img class="message img-fluid img-thumbnail w-100 h-100" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
       gallery.appendChild(div)
     })
+    selectAllImg.addEventListener('click', () => {
+      // UnselectAll.style.display = 'block'
+      // selectAllImg.style.display = 'none'
+      count = 0;
+      let element = document.getElementsByClassName("message");
+      let i = 0;
+      images.forEach(images => {
+        selectAll(images.webformatURL);
+        element[i].classList.add("added");
+        i++;
+      })
+
+    })
+    UnselectAll.addEventListener('click', () => {
+      // UnselectAll.style.display = 'none'
+      // selectAllImg.style.display = 'block'
+      count = 0;
+      document.getElementById('selectedImg').innerText = count;
+      sliders = [];
+      let element = document.getElementsByClassName("message");
+      let i = 0;
+      images.forEach(images => {
+        element[i].classList.remove("added");
+        i++;
+      })
+
+    })
+
   }
-
 }
-
+const homepage = () => {
+  query = 'pet';
+  fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
+    .then(response => response.json())
+    .then(data => {
+      imagesArea.style.display = 'block';
+      gallery.innerHTML = '';
+      // show gallery title
+      galleryHeader.style.display = 'flex';
+      data.hits.forEach(image => {
+        let div = document.createElement('div');
+        div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
+        div.innerHTML = ` <img class="message img-fluid img-thumbnail w-100 h-100" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
+        gallery.appendChild(div)
+      })
+    })
+}
 const getImages = (query) => {
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
@@ -45,25 +94,29 @@ const getImages = (query) => {
       document.getElementById('serverError').style.display = 'block';
       error.style.display = 'none';
       imagesArea.style.display = 'none';
-  });
+    });
 }
-
 let slideIndex = 0;
-let count = 0;
+const selectAll = (img) => {
+  sliders.push(img);
+  count++;
+  document.getElementById('selectedImg').innerText = count;
+}
 const selectItem = (event, img) => {
   let element = event.target;
   // element.classList.add('added');
   let item = sliders.indexOf(img);
+  console.log(item);
   if (item === -1) {
     element.classList.add('added');
     sliders.push(img);
-    count ++;
+    count++;
     document.getElementById('selectedImg').innerText = count;
   } else {
     element.classList.remove('added');
     sliders.splice(item, 1);
-    if (count >0) {
-      count --;
+    if (count > 0) {
+      count--;
       document.getElementById('selectedImg').innerText = count;
     }
   }
@@ -107,7 +160,7 @@ const createSlider = () => {
     changeSlide(slideIndex);
   }, duration);
 }
-const clearDuration = () =>{
+const clearDuration = () => {
   document.getElementById('duration').value = '';
 }
 
@@ -145,11 +198,18 @@ sliderBtn.addEventListener('click', function () {
 const keyPress = () => {
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
-  const search = document.getElementById('search');
-  getImages(search.value)
-  sliders.length = 0;
-  count = 0;
-  document.getElementById('selectedImg').innerText = count;
+  if(search.value == ''){
+    search.setAttribute('placeholder','This field requires something!')
+    // error.style.display = 'block';
+    // imagesArea.style.display = 'none';
+  }
+  else{
+    error.style.display = 'none';
+    getImages(search.value)
+    sliders.length = 0;
+    count = 0;
+    document.getElementById('selectedImg').innerText = count;
+  }
 }
 const enterBtn = (event) => {
   if (event.key == 'Enter') {
@@ -161,3 +221,4 @@ const enterBtn2 = (event) => {
     createSlider();
   }
 }
+homepage();
