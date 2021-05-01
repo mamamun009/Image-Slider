@@ -1,1 +1,1 @@
-# assgin-slid-6-fan
+A web slider. You can select images and create a slider.
